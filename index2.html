@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff; 
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            padding: 30px;
+            width: 40%;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5); 
+            transition: 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.03); 
+        }
+
+        .image-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            max-width: 150px;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.1); 
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2); 
+        }
+
+        .details {
+            margin-top: 20px;
+        }
+
+        .details p {
+            margin: 12px 0;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .details p b {
+            color: #1db954;
+        }
+
+        .details p span {
+            font-weight: 300; 
+        }
+
+        .details p span#productPrice {
+            color: #ffb74d; 
+        }
+
+        .glow-button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #ffffff;
+            background-color: #3a3a3a;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition:  0.3s ease ;
+            box-shadow: 0 4px 16px rgba(30, 215, 96, 0.2); 
+        }
+
+        .glow-button:hover {
+            background-color: #1db954; 
+            box-shadow: 0 8px 24px rgba(30, 215, 96, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img id="productImg" src="" alt="Product Image">
+        </div>
+        <div class="details">
+            <p><b>Id: </b><span id="productId"></span></p>
+            <p><b>Title: </b><span id="productTitle"></span></p>
+            <p><b>Price: </b>$<span id="productPrice"></span></p>
+            <p><b>Description: </b><span id="productDescription"></span></p>
+            <p><b>Category: </b><span id="productCategory"></span></p>
+            <p><b>Rating: </b><span id="productRate"></span></p>
+            <p><b>Count: </b><span id="productCount"></span></p>
+        </div>
+    </div>
+
+    <script>
+        let mainData = new URLSearchParams(window.location.search);
+        let id = mainData.get('id');
+        let title = mainData.get('title');
+        let price = mainData.get('price');
+        let description = mainData.get('description');
+        let category = mainData.get('category');
+        let image = mainData.get('image');
+        let rate = mainData.get('rating');
+        let count = mainData.get('ratingCount')
+
+        document.getElementById('productId').innerText = id;
+        document.getElementById('productTitle').innerText = title;
+        document.getElementById('productPrice').innerText = price;
+        document.getElementById('productDescription').innerText = description;
+        document.getElementById('productCategory').innerText = category;
+        document.getElementById('productImg').src = image;
+        document.getElementById('productRate').innerText = rate;
+        document.getElementById('productCount').innerText = count;
+    </script>
+</body>
+
+</html>

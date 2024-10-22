@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Theme Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #121212; 
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            display: flex;
+            width: 100vw; 
+            height: 100vh; 
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+        }
+
+        .left-section {
+            width: 25vw; 
+            background-color: #1f1f1f;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .right-section {
+            width: 75vw; 
+            background-color: #242424; 
+            overflow-y: auto;
+        }
+
+        .button {
+            width: 80%; 
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #3a3a3a; 
+            color: #ffffff; 
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition:  0.3s ease 0.2s ease;
+        }
+
+        .button:hover {
+            background-color: #575757; 
+            transform: scale(1.05); 
+        }
+
+        .button:active {
+            transform: scale(0.95); 
+        }
+
+        .search-container {
+            width: 70%; 
+            display: flex;
+            align-items: center; 
+            margin-bottom: 20px; 
+            position: fixed;
+        }
+
+        .search-bar {
+            flex: 1; 
+            padding: 10px; 
+            border: none;
+            border-radius: 5px 0 0 5px; 
+            background-color: #3a3a3a; 
+            color: #ffffff; 
+            outline: none; 
+        }
+
+        .search-button {
+            padding: 10px 20px; 
+            border: none;
+            border-radius: 0 5px 5px 0; 
+            background-color: #3a3a3a; 
+            color: #ffffff; 
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #575757; 
+        }
+
+        .card {
+            background-color: #3a3a3a; 
+            border-radius: 10px; 
+            padding: 15px; 
+            margin-top: 10px; 
+            width: 85%; 
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+            margin: 20px;
+            margin-top: 5%;
+        }
+
+        .card p {
+            color: #ffffff; 
+            margin-bottom: 10px;
+        }
+
+        .button-container {
+            display: flex; 
+            justify-content: space-between; 
+            margin-top: 15px; 
+        }
+
+        .card-button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px; 
+            background-color: #4a4a4a; 
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .card-button:hover {
+            background-color: #676767;
+        }
+
+        .card-content {
+            display: flex; 
+            flex-direction: column; 
+            background-color: lightcoral;
+            padding: 20px;
+            margin: 20px;
+        }
+        .right-section::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .right-section::-webkit-scrollbar-thumb {
+            background-color: #575757;
+            border-radius: 10px; 
+        }
+
+        .right-section::-webkit-scrollbar-track {
+            background-color: #242424; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-section">
+            <button class="button" id="fetchBtn">Fetch Data</button>
+            <button class="button" id="ElectronicBtn">Electronics</button>
+            <button class="button" id="menBtn">Men's Clothing</button>
+            <button class="button" id="womenBtn">Women's Clothing</button>
+            <button class="button" id="JewerlyBtn">Jewelry</button>
+        </div>
+        <div class="right-section" >
+            <div class="search-container">
+                <input type="search" class="search-bar" list="searchItem" placeholder="Search..." id="searching">
+                <datalist id="searchItem">
+                    <option value="electronics">
+                    <option value="men's clothing">
+                    <option value="women's clothing">
+                    <option value="jewelery">
+                </datalist>
+                <button class="search-button" id="searchBtn">Search</button>
+            </div>
+            <!-- Right section is empty -->
+            <div class="card" id="informationPage"> 
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let fetchBtn=document.getElementById("fetchBtn");
+        let ElectronicBtn=document.getElementById("ElectronicBtn");
+        let menBtn=document.getElementById("menBtn");
+        let womenBtn=document.getElementById("womenBtn");
+        let JewerlyBtn=document.getElementById("JewerlyBtn");
+
+        let searchbar=document.getElementById("searching");
+        let searchBtn=document.getElementById("searchBtn")
+        
+        let informationPage=document.getElementById("informationPage")
+
+        fetchBtn.onclick = async ()=>{
+            let response =await fetch("https://fakestoreapi.com/products")
+            let data = await response.json();
+            console.log(data)
+            alert("Data is fetching")
+            localStorage.setItem("data",JSON.stringify(data));
+            displayData(data);
+        }
+
+        function displayData(data){
+            informationPage.innerHTML="";
+            data.forEach((obj,index)=>{
+                let div2=document.createElement("div");
+                div2.className="card-content"
+                div2.innerHTML=`
+                <p><b>ID: </b>${obj["id"]}</p>
+                <p><b>TITLE: </b>${obj["title"]}</p>
+                <p><b>PRICE: </b>${obj["price"]}</p>
+                <p><b>DESCRIPTION: </b>${obj["description"]}</p>
+                <p><b>CATEGORY: </b>${obj["category"]}</p>`;
+
+                let btndiv=document.createElement("div");
+                let delbtn=document.createElement("button");
+                delbtn.innerText="Delete"
+                let seemore=document.createElement("button");
+                seemore.innerText="See More"
+
+                btndiv.className="button-container";
+                delbtn.className="card-button delete-button";
+                seemore.className="card-button see-more-button";
+
+                delbtn.onclick=()=>{
+                    deleteCard(index);
+                }
+
+                seemore.onclick=()=>{
+                    window.open(`index2.html?id=${obj["id"]}&title=${obj["title"]}&price=${obj["price"]}&description=${obj["description"]}&category=${obj["category"]}&image=${obj["image"]}&rating=${obj['rating']['rate']}&ratingCount=${obj['rating']['count']}`, '_blank');
+                }
+
+                btndiv.append(delbtn,seemore);
+                div2.appendChild(btndiv);
+                informationPage.appendChild(div2)
+            })
+        }
+        searchBtn.onclick=()=>{
+            let data=JSON.parse(localStorage.getItem('data')) || [];
+            let storedData=data.filter((obj2)=>obj2['category']==searchbar.value)
+            displayData(storedData)
+        }
+        
+
+        function deleteCard(index){
+            let data=JSON.parse(localStorage.getItem('data'));
+            data.splice(index,1);
+            localStorage.setItem('data',JSON.stringify(data))
+            displayData(data)
+        }
+
+        ElectronicBtn.onclick=()=>{
+            let data=JSON.parse(localStorage.getItem("data")) || [];
+            if(data.length > 0){
+                data=data.filter((obj)=>obj["category"] === "electronics");
+                displayData(data)
+            }
+            else{
+                informationPage.innerText="Data is not fetched";
+            }
+        }
+
+        menBtn.onclick =()=>{
+            let data=JSON.parse(localStorage.getItem("data")) || [];
+            if(data.length > 0){
+                data=data.filter((obj)=>obj["category"] === "men's clothing");
+                displayData(data)
+            }
+            else{
+                informationPage.innerText="Data is not fetched";
+            }
+        }
+
+        womenBtn.onclick=()=>{
+            let data=JSON.parse(localStorage.getItem("data")) || [];
+            if(data.length > 0){
+                data=data.filter((obj)=>obj["category"] === "women's clothing");
+                displayData(data)
+            }
+            else{
+                informationPage.innerText="Data is not fetched";
+            }
+        }
+
+        JewerlyBtn.onclick=()=>{
+            let data=JSON.parse(localStorage.getItem("data")) || [];
+            if(data.length > 0){
+                data=data.filter((obj)=>obj["category"] === "jewelery");
+                displayData(data)
+            }
+            else{
+                informationPage.innerText="Data is not fetched";
+            }
+        }
+
+        window.onload=()=>{
+            let data=JSON.parse(localStorage.getItem("data")) || [];
+            if (data.length > 0){
+                displayData(data);
+            }
+            else{
+                informationPage.innerText="No Data is Available";
+                informationPage.style.color="white"
+            }
+        }
+    </script>
+</body>
+</html>
